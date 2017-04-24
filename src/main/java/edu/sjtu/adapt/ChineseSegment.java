@@ -33,16 +33,16 @@ public class ChineseSegment {
 		BufferedReader bReader=Files.newBufferedReader(Paths.get(fileout));
 		BufferedWriter bWriter = Files.newBufferedWriter(Paths.get(fileout));
 		while(bReader.ready()){
-		String text=bReader.readLine();
-		Annotation annotation = new Annotation(text);
-		pipeline.annotate(annotation);
-		List<CoreMap> sens = annotation.get(CoreAnnotations.SentencesAnnotation.class);
-		for (CoreMap sen : sens) {
-			String tokens = sen.get(CoreAnnotations.TokensAnnotation.class).stream()
-					.map(x -> x.get(CoreAnnotations.TextAnnotation.class)).reduce((x, y) -> x + " " + y).orElse("");
-			System.out.println(tokens);
-			bWriter.write(tokens);
-			}
+			String text=bReader.readLine();
+			Annotation annotation = new Annotation(text);
+			pipeline.annotate(annotation);
+			List<CoreMap> sens = annotation.get(CoreAnnotations.SentencesAnnotation.class);
+			for (CoreMap sen : sens) {
+				String tokens = sen.get(CoreAnnotations.TokensAnnotation.class).stream()
+						.map(x -> x.get(CoreAnnotations.TextAnnotation.class)).reduce((x, y) -> x + " " + y).orElse("");
+				System.out.println(tokens);
+				bWriter.write(tokens);
+				}
 		}
 		bReader.close();
 		bWriter.close();
