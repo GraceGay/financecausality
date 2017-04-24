@@ -13,6 +13,7 @@ import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
 import edu.stanford.nlp.io.IOUtils;
 import edu.stanford.nlp.ling.CoreAnnotations;
+import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.util.CoreMap;
@@ -27,22 +28,21 @@ public class ChineseSegment {
 			filein = args[0];
 			fileout = args[1];
 		}
+		filein="D:\\data\\tmp\\filein2.txt";
+		fileout="D:\\data\\tmp\\out.txt";
 		System.out.println("filein:"+filein);
 		System.out.println("fileout:"+fileout);
 		StanfordCoreNLP pipeline = new StanfordCoreNLP("StanfordCoreNLP-chinese-tokenize.properties");
-		BufferedReader bReader=Files.newBufferedReader(Paths.get(fileout));
+		BufferedReader bReader=Files.newBufferedReader(Paths.get(filein));
 		BufferedWriter bWriter = Files.newBufferedWriter(Paths.get(fileout));
 		while(bReader.ready()){
 			String text=bReader.readLine();
 			Annotation annotation = new Annotation(text);
 			pipeline.annotate(annotation);
-			List<CoreMap> sens = annotation.get(CoreAnnotations.SentencesAnnotation.class);
-			for (CoreMap sen : sens) {
-				String tokens = sen.get(CoreAnnotations.TokensAnnotation.class).stream()
-						.map(x -> x.get(CoreAnnotations.TextAnnotation.class)).reduce((x, y) -> x + " " + y).orElse("");
-				System.out.println(tokens);
-				bWriter.write(tokens);
-				}
+			List<CoreLabel> list = annotation.get(CoreAnnotations.TokensAnnotation.class);
+			String tokens = list.stream().map(x->x.get(CoreAnnotations.TextAnnotation.class))
+			.reduce((x,y)->x+" "+y).orElse("");
+			bWriter.write(tokens+"\n");
 		}
 		bReader.close();
 		bWriter.close();
