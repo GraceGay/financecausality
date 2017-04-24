@@ -35,16 +35,21 @@ public class ChineseSegment {
 		StanfordCoreNLP pipeline = new StanfordCoreNLP("StanfordCoreNLP-chinese-tokenize.properties");
 		BufferedReader bReader=Files.newBufferedReader(Paths.get(filein));
 		BufferedWriter bWriter = Files.newBufferedWriter(Paths.get(fileout));
-		while(bReader.ready()){
-			String text=bReader.readLine();
+//		while(bReader.ready()){
+		bReader.lines().parallel().map(text->{
 			Annotation annotation = new Annotation(text);
 			pipeline.annotate(annotation);
 			List<CoreLabel> list = annotation.get(CoreAnnotations.TokensAnnotation.class);
 			String tokens = list.stream().map(x->x.get(CoreAnnotations.TextAnnotation.class))
 			.reduce((x,y)->x+" "+y).orElse("");
-			bWriter.write(tokens+"\n");
-		}
-		bReader.close();
+			return tokens;
+		}).forEach(x->{
+			try {
+				bWriter.write(x);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}}
+		);
 		bWriter.close();
 	}
 }
