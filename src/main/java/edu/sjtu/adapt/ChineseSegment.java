@@ -28,8 +28,8 @@ public class ChineseSegment {
 			filein = args[0];
 			fileout = args[1];
 		}
-		filein="D:\\data\\tmp\\filein2.txt";
-		fileout="D:\\data\\tmp\\out.txt";
+//		filein="D:\\data\\tmp\\filein2.txt";
+//		fileout="D:\\data\\tmp\\out.txt";
 		System.out.println("filein:"+filein);
 		System.out.println("fileout:"+fileout);
 		StanfordCoreNLP pipeline = new StanfordCoreNLP("StanfordCoreNLP-chinese-tokenize.properties");
