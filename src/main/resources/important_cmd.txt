@@ -1,0 +1,1 @@
+ ./word2vec -train ./../../train.txt  -output ./../../output.txt -threads 64 -size 400 -save-vocab ./../../vocab.txt

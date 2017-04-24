@@ -3,14 +3,11 @@ package edu.sjtu.adapt;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.stream.Stream;
-
-import ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy;
 
 public class SelectSentence {
 
