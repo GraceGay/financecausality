@@ -24,7 +24,7 @@ public class SelectSentence {
 		BufferedWriter writer = Files.newBufferedWriter(Paths.get(fileout));
 		reader.lines().parallel()
 		.flatMap(x->Arrays.asList(x.split("。|！|!|？|\\?")).stream())
-		.filter(x->keys.stream().anyMatch(key->x.indexOf(key)>0))
+		.filter(x->keys.stream().anyMatch(key->x.indexOf(key)>=0))
 		.forEach(x->{
 			try {
 				writer.write(x+"\n");
