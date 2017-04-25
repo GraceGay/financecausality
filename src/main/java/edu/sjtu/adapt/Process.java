@@ -26,8 +26,8 @@ public class Process {
 		BufferedReader reader = Files.newBufferedReader(Paths.get(args[0]));
 		BufferedWriter writer = Files.newBufferedWriter(Paths.get(args[1]));
 		reader.lines().parallel().filter(line->{
-		return causekeys.stream().anyMatch(key->line.indexOf(key)>0)&
-						   effectkeys.stream().anyMatch(key->line.indexOf(key)>0);	
+		return causekeys.stream().anyMatch(key->line.indexOf(key)>=0)&
+						   effectkeys.stream().anyMatch(key->line.indexOf(key)>=0);	
 		}).forEach(line->{
 			try {
 				writer.write(line+"\n");
