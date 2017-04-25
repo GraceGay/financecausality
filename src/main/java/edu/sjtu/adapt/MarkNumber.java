@@ -10,6 +10,9 @@ import java.util.HashSet;
 
 import com.alibaba.fastjson.JSONObject;
 
+import ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy;
+import edu.stanford.nlp.objectbank.IdentityFunction;
+
 public class MarkNumber {
 
 	public static void main(String[] args) throws IOException {
@@ -40,7 +43,29 @@ public class MarkNumber {
 			
 			
 			if (cause ==null|effect==null) continue;
-			
+			if(cause.equals(effect)){
+				int causeindex=-1;
+				int effectindex=-1;
+				for(String causekey:causekeys){
+					 causeindex=cause.indexOf(causekey);
+					 if(causeindex>=0)break;
+				}
+				 for (String effectkey:effectkeys){
+					 effectindex=cause.indexOf(effectkey);
+					 if(effectindex>=0) break;
+				 }
+				 
+				if(causeindex==-1||effectindex==-1) continue;
+				int max=causeindex>effectindex?causeindex:effectindex;
+				String cause_cp=cause;
+				cause=cause_cp.substring(0, max);
+				effect=cause_cp.substring(max);
+				if(causeindex>effectindex){
+					String tString=cause;
+					cause=effect;
+					effect=tString;
+				}
+			}
 			JSONObject jsonObject=new JSONObject();
 			jsonObject.put("con", line);
 			jsonObject.put("lineid", ++num);
