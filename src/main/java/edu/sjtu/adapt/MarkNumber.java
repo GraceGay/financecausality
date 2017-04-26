@@ -11,10 +11,50 @@ import java.util.regex.Matcher;
 
 import com.alibaba.fastjson.JSONObject;
 
+import edu.stanford.nlp.ling.CoreAnnotations;
+import edu.stanford.nlp.pipeline.Annotation;
+import edu.stanford.nlp.pipeline.StanfordCoreNLP;
+
 public class MarkNumber {
 
 	public static void main(String[] args) throws IOException {
 
+		token(args);
+
+	}
+
+	private static void token(String[] args) throws IOException {
+		BufferedReader reader = Files.newBufferedReader(Paths.get(args[0]));
+		BufferedWriter writer = Files.newBufferedWriter(Paths.get(args[1]));
+		StanfordCoreNLP pipeline=new StanfordCoreNLP("StanfordCoreNLP-chinese-tokenize.properties");
+		reader.lines().parallel().forEach(line->{
+			JSONObject jsonObject = JSONObject.parseObject(line);
+			String cause = jsonObject.getString("cause");
+			String effect = jsonObject.getString("effect");
+			cause=cause.replaceAll("@", "");
+			effect=effect.replaceAll("@", "");
+			Annotation annotation=new Annotation(cause);
+			pipeline.annotate(annotation);
+			cause = annotation.get(CoreAnnotations.TokensAnnotation.class).stream()
+			.map(x->x.get(CoreAnnotations.TextAnnotation.class)).reduce((x,y)->x+"@"+y).orElse("");
+			
+			annotation=new Annotation(effect);
+			pipeline.annotate(annotation);
+			effect = annotation.get(CoreAnnotations.TokensAnnotation.class).stream()
+					.map(x->x.get(CoreAnnotations.TextAnnotation.class)).reduce((x,y)->x+"@"+y).orElse("");
+			if (cause.isEmpty()||effect.isEmpty()) return;
+			jsonObject.put("causetokens", cause);
+			jsonObject.put("effecttokens", effect);
+			try {
+				writer.write(jsonObject.toJSONString() + "\n");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		});
+		reader.close();
+		writer.close();
+	}
+	private static void mark(String[] args) throws IOException {
 		BufferedReader reader = Files.newBufferedReader(Paths.get(args[0]));
 		BufferedWriter writer = Files.newBufferedWriter(Paths.get(args[1]));
 		int num = 0;
@@ -41,7 +81,6 @@ public class MarkNumber {
 		}
 		reader.close();
 		writer.close();
-
 	}
 
 }
