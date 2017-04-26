@@ -32,7 +32,6 @@ public class MarkNumber {
 				}
 			}
 			if(cause==null||effect==null||cause.isEmpty()||effect.isEmpty()) continue;
-			
 			JSONObject jsonObject = new JSONObject();
 			jsonObject.put("con", line);
 			jsonObject.put("lineid", ++num);
