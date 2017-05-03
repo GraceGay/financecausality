@@ -28,6 +28,7 @@ public class MarkNumber {
 		BufferedWriter writer = Files.newBufferedWriter(Paths.get(args[1]));
 		StanfordCoreNLP pipeline=new StanfordCoreNLP("StanfordCoreNLP-chinese-tokenize.properties");
 		reader.lines().parallel().forEach(line->{
+			System.out.println("line"+line);
 			JSONObject jsonObject = JSONObject.parseObject(line);
 			String cause = jsonObject.getString("cause");
 			String effect = jsonObject.getString("effect");

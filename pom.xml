@@ -124,7 +124,7 @@
                     <manifest>  
                         <addClasspath>true</addClasspath>  
                         <classpathPrefix>lib/</classpathPrefix>  
-                        <mainClass>edu.sjtu.adapt.Process</mainClass>  
+                        <mainClass>edu.sjtu.adapt.ChineseSegment</mainClass>  
                     </manifest>  
                 </archive>  
             </configuration>  

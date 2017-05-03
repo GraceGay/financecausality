@@ -36,7 +36,7 @@ public class ChineseSegment {
 		BufferedReader bReader=Files.newBufferedReader(Paths.get(filein));
 		BufferedWriter bWriter = Files.newBufferedWriter(Paths.get(fileout));
 //		while(bReader.ready()){
-		bReader.lines().parallel().map(text->{
+		bReader.lines().map(text->{
 			Annotation annotation = new Annotation(text);
 			pipeline.annotate(annotation);
 			List<CoreLabel> list = annotation.get(CoreAnnotations.TokensAnnotation.class);
